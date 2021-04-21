@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units
 {
-	public class Document : Unit
+	public class Manuscript : Unit
 	{
 		[JsonProperty]
 		public List<Text> texts {get; set;}
@@ -14,7 +14,7 @@ namespace ManuscriptsProcessor.Units
 		public string googleDocPath {get; set;}
 
 		[JsonConstructor]
-        public Document(string _id, string _value, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _tagging, List<Text> _texts)
+        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _tagging, List<Text> _texts)
         {
             id = _id;
             name = _value;
@@ -24,7 +24,7 @@ namespace ManuscriptsProcessor.Units
             texts = _texts;
         }
 
-        public Document(string _id, string _value, string _filePath, string _googleDocPath)
+        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath)
         {
             id = _id;
             name = _value;
@@ -32,7 +32,7 @@ namespace ManuscriptsProcessor.Units
             googleDocPath = _googleDocPath;
         }
 
-        public Document()
+        public Manuscript()
         {
 
         }
