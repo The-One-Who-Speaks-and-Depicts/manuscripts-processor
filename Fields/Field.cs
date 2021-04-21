@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ManuscriptsProcessor.Fields
 {
-	public interface IField
+	public class Field
 	{
 		public string id {get; set;}
 		public string name {get; set;}
