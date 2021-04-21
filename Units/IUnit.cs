@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using ManuscriptsProcessor.Values;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Units
 {
 	public interface IUnit
 	{

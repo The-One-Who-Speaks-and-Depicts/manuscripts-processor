@@ -1,8 +1,9 @@
-namespace ManuscriptsProcessor
+using ManuscriptsProcessor.Units;
+
+namespace ManuscriptsProcessor.Values
 {
 	public interface IValue 
 	{
-		public string id {get; set;}
 		public string name {get; set;}
 	}
 }
