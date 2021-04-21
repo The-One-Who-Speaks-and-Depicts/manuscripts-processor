@@ -23,5 +23,10 @@ namespace ManuscriptsProcessor.Units
             id = _textID;
             name = _textName;
         }
+
+        public Text()
+        {
+        	
+        }
 	}
 }
