@@ -1,13 +1,16 @@
 using System.Collections.Generic;
 using ManuscriptsProcessor.Values;
+using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units
 {
-	public interface IUnit
+	public abstract class Unit
 	{
-		public string value {get; set;}
+		[JsonProperty]
+		public string name {get; set;}
+		[JsonProperty]
 		public string id {get; set;}
+		[JsonProperty]
 		public List<Dictionary<string, List<Value>>> tagging {get; set;}
-		public List<IUnit> lesserUnits {get; set;}
 	}
 }
