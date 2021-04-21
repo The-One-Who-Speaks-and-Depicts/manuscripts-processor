@@ -10,10 +10,10 @@ namespace ManuscriptsProcessor.Units
         [JsonProperty]
         public string lemma {get; set;}
         [JsonProperty]
-        public List<Realization> realizations {get; set;}
+        public List<Token> realizations {get; set;}
 
         [JsonConstructor]
-        public DictionaryUnit(string _ID, string _lemma, List<Realization> _realizations)
+        public DictionaryUnit(string _ID, string _lemma, List<Token> _realizations)
         {
             id = _ID;
             lemma = _lemma;
