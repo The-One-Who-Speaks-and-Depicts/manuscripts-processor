@@ -5,8 +5,7 @@ using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units 
 {
-    // TODO: add specific field for syntactic tagging
-	public class Clause : Unit
+    public class Clause : Unit
 	{
 		[JsonProperty]
 		public List<Token> tokens {get; set;}
