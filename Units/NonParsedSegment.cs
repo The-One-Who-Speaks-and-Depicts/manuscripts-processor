@@ -4,7 +4,7 @@ using ManuscriptsProcessor.Values;
 
 namespace ManuscriptsProcessor.Units
 {
-	public class NonParsedSegment : Unit
+	public class NonParsedSegment : Segment
 	{
 		[JsonProperty]
 		public List<Token> tokens;

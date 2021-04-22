@@ -4,7 +4,7 @@ using ManuscriptsProcessor.Values;
 
 namespace ManuscriptsProcessor.Units
 {
-	public class ParsedSegment : Unit
+	public class ParsedSegment : Segment
 	{
 		[JsonProperty]
 		public List<Clause> clauses;
