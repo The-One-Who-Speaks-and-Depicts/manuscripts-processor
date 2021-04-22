@@ -12,6 +12,11 @@ namespace ManuscriptsProcessor.Fields
 		public List<Connection> connections {get; set;}
 
 		[JsonConstructor]
+		public Tree(List<Node> _nodes, List<Connection> _connections)
+		{
+			nodes = _nodes;
+			connections = _connections;
+		}
 
 		public Tree()
 		{
