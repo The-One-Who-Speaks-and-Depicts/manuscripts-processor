@@ -7,21 +7,21 @@ namespace ManuscriptsProcessor.Units
 	public class Manuscript : Unit
 	{
 		[JsonProperty]
-		public List<Text> texts {get; set;}
+		public List<Section> sections {get; set;}
 		[JsonProperty]
 		public string filePath {get; set;}
 		[JsonProperty]
 		public string googleDocPath {get; set;}
 
 		[JsonConstructor]
-        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _tagging, List<Text> _texts)
+        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _tagging, List<Section> _sections)
         {
             id = _id;
             name = _value;
             filePath = _filePath;
             googleDocPath = _googleDocPath;
             tagging = _tagging;
-            texts = _texts;
+            sections = _sections;
         }
 
         public Manuscript(string _id, string _value, string _filePath, string _googleDocPath)

@@ -4,8 +4,8 @@ using ManuscriptsProcessor.Fields;
 using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units 
-{
-    public class Clause : Unit
+{    
+	public class Clause : Unit
 	{
 		[JsonProperty]
 		public List<Token> tokens {get; set;}

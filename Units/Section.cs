@@ -5,27 +5,27 @@ using Newtonsoft.Json;
 namespace ManuscriptsProcessor.Units 
 {
     // TODO: think about name of this. Ask to be precise. Think about the paragraph layer. Segment? Section? Part?
-	public class Text : Unit
+	public class Section : Unit
 	{
 		[JsonProperty]
 		public List<Clause> clauses {get; set;}
 
 		[JsonConstructor]
-        public Text(string _textID, string _textName, List<Dictionary<string, List<Value>>> _textMetaData, List<Clause> _clauses)
+        public Section(string _sectionID, string _sectionName, List<Dictionary<string, List<Value>>> _sectionMetaData, List<Clause> _clauses)
         {
-            id = _textID;
-            name = _textName;
-            tagging = _textMetaData;
+            id = _sectionID;
+            name = _sectionName;
+            tagging = _sectionMetaData;
             clauses = _clauses;
         }
 
-        public Text(string _textID, string _textName)
+        public Section(string _sectionID, string _sectionName)
         {
-            id = _textID;
-            name = _textName;
+            id = _sectionID;
+            name = _sectionName;
         }
 
-        public Text()
+        public Section()
         {
         	
         }
