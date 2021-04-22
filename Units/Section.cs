@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units 
 {
-    // TODO: Think about the paragraph layer. Segment? Section? Part?
+    
 	public class Section : Unit
 	{
 		[JsonProperty]

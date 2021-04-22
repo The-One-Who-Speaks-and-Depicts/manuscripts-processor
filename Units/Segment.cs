@@ -4,29 +4,8 @@ using ManuscriptsProcessor.Values;
 
 namespace ManuscriptsProcessor.Units
 {
-	public class Segment : Unit
+	public abstract class Segment : Unit
 	{
-		[JsonProperty]
-		public List<Token> tokens;
-
-		[JsonConstructor]
-		public Segment(string _segmentID, string _segmentText, List<Dictionary<string, List<Value>>> _segmentFields, List<Token> _tokens)
-		{
-			id = _segmentID;
-			name = _segmentText;
-			tagging = _segmentFields;
-			tokens = _tokens;
-		}
-
-		public Segment(string _segmentID, string _segmentText)
-		{
-			id = _segmentID;
-			name = _segmentText;
-		}
-
-		public Segment()
-		{
-
-		}
+		
 	}
 }
