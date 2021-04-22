@@ -4,19 +4,19 @@ using Newtonsoft.Json;
 
 namespace ManuscriptsProcessor.Units 
 {
-    // TODO: think about name of this. Ask to be precise. Think about the paragraph layer. Segment? Section? Part?
+    // TODO: Think about the paragraph layer. Segment? Section? Part?
 	public class Section : Unit
 	{
 		[JsonProperty]
-		public List<Clause> clauses {get; set;}
+		public List<Segment> segments {get; set;}
 
 		[JsonConstructor]
-        public Section(string _sectionID, string _sectionName, List<Dictionary<string, List<Value>>> _sectionMetaData, List<Clause> _clauses)
+        public Section(string _sectionID, string _sectionName, List<Dictionary<string, List<Value>>> _sectionMetaData, List<Segment> _segments)
         {
             id = _sectionID;
             name = _sectionName;
             tagging = _sectionMetaData;
-            clauses = _clauses;
+            segments = _segments;
         }
 
         public Section(string _sectionID, string _sectionName)
