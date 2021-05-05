@@ -12,7 +12,7 @@ namespace ManuscriptsProcessor.Units
 		[JsonConstructor]
 		public ParsedSegment(string _segmentID, string _segmentText, List<Dictionary<string, List<Value>>> _segmentFields, List<Clause> _clauses)
 		{
-			id = _segmentID;
+			Id = _segmentID;
 			name = _segmentText;
 			tagging = _segmentFields;
 			clauses = _clauses;
@@ -20,7 +20,7 @@ namespace ManuscriptsProcessor.Units
 
 		public ParsedSegment(string _segmentID, string _segmentText)
 		{
-			id = _segmentID;
+			Id = _segmentID;
 			name = _segmentText;
 		}
 

@@ -6,7 +6,7 @@ namespace ManuscriptsProcessor.Units
 	public class DictionaryUnit 
 	{
         [JsonProperty]
-        public string id {get ; set;}
+        public string Id {get ; set;}
         [JsonProperty]
         public string lemma {get; set;}
         [JsonProperty]
@@ -15,7 +15,7 @@ namespace ManuscriptsProcessor.Units
         [JsonConstructor]
         public DictionaryUnit(string _ID, string _lemma, List<Token> _realizations)
         {
-            id = _ID;
+            Id = _ID;
             lemma = _lemma;
             realizations = _realizations;
         }

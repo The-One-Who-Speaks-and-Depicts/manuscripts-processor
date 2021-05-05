@@ -13,7 +13,7 @@ namespace ManuscriptsProcessor.Units
 		[JsonConstructor]
         public Section(string _sectionID, string _sectionName, List<Dictionary<string, List<Value>>> _sectionMetaData, List<Segment> _segments)
         {
-            id = _sectionID;
+            Id = _sectionID;
             name = _sectionName;
             tagging = _sectionMetaData;
             segments = _segments;
@@ -21,7 +21,7 @@ namespace ManuscriptsProcessor.Units
 
         public Section(string _sectionID, string _sectionName)
         {
-            id = _sectionID;
+            Id = _sectionID;
             name = _sectionName;
         }
 

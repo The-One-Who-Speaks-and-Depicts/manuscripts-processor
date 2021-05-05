@@ -9,7 +9,7 @@ namespace ManuscriptsProcessor.Units
 		[JsonProperty]
 		public string name {get; set;}
 		[JsonProperty]
-		public string id {get; set;}
+		public string Id {get; set;}
 		[JsonProperty]
 		public List<Dictionary<string, List<Value>>> tagging {get; set;}
 	}

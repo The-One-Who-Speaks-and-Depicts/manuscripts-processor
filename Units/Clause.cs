@@ -15,7 +15,7 @@ namespace ManuscriptsProcessor.Units
 		[JsonConstructor]
         public Clause(string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<Token> _tokens, Tree _parsing)
         {
-            id = _clauseID;
+            Id = _clauseID;
             name = _clauseText;
             tagging = _clauseFields;
             tokens = _tokens;
@@ -23,7 +23,7 @@ namespace ManuscriptsProcessor.Units
         }
         public Clause(string _clauseID, string _clauseText)
         {
-            id = _clauseID;
+            Id = _clauseID;
             name = _clauseText;
         }
 

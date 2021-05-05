@@ -12,7 +12,7 @@ namespace ManuscriptsProcessor.Units
 		[JsonConstructor]
 		public NonParsedSegment(string _segmentID, string _segmentText, List<Dictionary<string, List<Value>>> _segmentFields, List<Token> _tokens)
 		{
-			id = _segmentID;
+			Id = _segmentID;
 			name = _segmentText;
 			tagging = _segmentFields;
 			tokens = _tokens;
@@ -20,7 +20,7 @@ namespace ManuscriptsProcessor.Units
 
 		public NonParsedSegment(string _segmentID, string _segmentText)
 		{
-			id = _segmentID;
+			Id = _segmentID;
 			name = _segmentText;
 		}
 

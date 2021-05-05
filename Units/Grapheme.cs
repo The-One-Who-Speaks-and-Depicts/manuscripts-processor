@@ -11,13 +11,13 @@ namespace ManuscriptsProcessor.Units
         public Grapheme(List<Dictionary<string, List<Value>>> _fields, string _graphemeID, string _grapheme)
         {
         	tagging = _fields;
-            id = _graphemeID;
+            Id = _graphemeID;
             name = _grapheme;
         }        
         
         public Grapheme(string _graphemeID, string _grapheme)
         {           
-            id = _graphemeID;
+            Id = _graphemeID;
             name = _grapheme;
         }
 
