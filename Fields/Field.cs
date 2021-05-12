@@ -8,9 +8,7 @@ namespace ManuscriptsProcessor.Fields
 	public class Field
 	{
 		[JsonProperty]
-		public string id {get; set;}
-		[JsonProperty]
-		public string name {get; set;}
+		public string Id {get; set;}
 		[JsonProperty]
 		public string description {get; set;}
 		[JsonProperty]
@@ -27,10 +25,9 @@ namespace ManuscriptsProcessor.Fields
 		public List<object> values {get; set;}
 
 		[JsonConstructor]
-        public Field(string _id, string _name, List<object> _values, string _description,  bool _isUserFilled, bool _isMultiple, string _host, string _possessed, Dictionary<string, List<string>> _connectedFields)
+        public Field(string _id, List<object> _values, string _description,  bool _isUserFilled, bool _isMultiple, string _host, string _possessed, Dictionary<string, List<string>> _connectedFields)
         {
-            id = _id;
-            name = _name;
+            Id = _id;
             values = _values;
             description = _description;
             isUserFilled = _isUserFilled;

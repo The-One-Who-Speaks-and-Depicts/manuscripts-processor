@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <PackageId>ManuscriptsProcessor</PackageId>
-  <Version>0.1.1</Version>
+  <Version>0.1.2</Version>
   <Authors>Ilia Afanasev</Authors>
   <Company>SPbU</Company>
   <Description>
