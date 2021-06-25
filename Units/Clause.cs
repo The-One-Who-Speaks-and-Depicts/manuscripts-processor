@@ -13,7 +13,7 @@ namespace ManuscriptsProcessor.Units
         public Tree parsing {get; set;}
 
 		[JsonConstructor]
-        public Clause(string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<Token> _tokens, Tree _parsing)
+        public Clause(string _clauseID, string _clauseText, List<Tagging> _clauseFields, List<Token> _tokens, Tree _parsing)
         {
             Id = _clauseID;
             name = _clauseText;

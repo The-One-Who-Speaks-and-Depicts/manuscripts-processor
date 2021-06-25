@@ -14,7 +14,7 @@ namespace ManuscriptsProcessor.Units
 		public string googleDocPath {get; set;}
 
 		[JsonConstructor]
-        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _tagging, List<Section> _sections)
+        public Manuscript(string _id, string _value, string _filePath, string _googleDocPath, List<Tagging> _tagging, List<Section> _sections)
         {
             Id = _id;
             name = _value;

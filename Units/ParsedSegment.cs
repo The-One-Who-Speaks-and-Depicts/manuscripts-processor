@@ -10,7 +10,7 @@ namespace ManuscriptsProcessor.Units
 		public List<Clause> clauses;
 
 		[JsonConstructor]
-		public ParsedSegment(string _segmentID, string _segmentText, List<Dictionary<string, List<Value>>> _segmentFields, List<Clause> _clauses)
+		public ParsedSegment(string _segmentID, string _segmentText, List<Tagging> _segmentFields, List<Clause> _clauses)
 		{
 			Id = _segmentID;
 			name = _segmentText;

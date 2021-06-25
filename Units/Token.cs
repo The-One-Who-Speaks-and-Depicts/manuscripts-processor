@@ -12,7 +12,7 @@ namespace ManuscriptsProcessor.Units
 		public string shownToken {get; set;}
 
 		[JsonConstructor]
-        public Token(List<Dictionary<string, List<Value>>> _fields, string _tokenID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
+        public Token(List<Tagging> _fields, string _tokenID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
         {            
             tagging = _fields;
             Id = _tokenID;

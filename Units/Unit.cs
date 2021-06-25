@@ -11,6 +11,6 @@ namespace ManuscriptsProcessor.Units
 		[JsonProperty]
 		public string Id {get; set;}
 		[JsonProperty]
-		public List<Dictionary<string, List<Value>>> tagging {get; set;}
+		public List<Tagging> tagging {get; set;}
 	}
 }

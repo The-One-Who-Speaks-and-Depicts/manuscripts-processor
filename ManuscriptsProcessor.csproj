@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>ManuscriptsProcessor</PackageId>
-  <Version>0.1.2</Version>
+  <Version>0.2.0</Version>
   <Authors>Ilia Afanasev</Authors>
   <Company>SPbU</Company>
   <Description>
-      This library is aimed at simple preprocessing of ancient manuscripts. Warning, this is deeply alpha version.
+      This library is aimed at simple preprocessing of ancient manuscripts. Warning, this is a deeply alpha version.
     </Description>
   <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>

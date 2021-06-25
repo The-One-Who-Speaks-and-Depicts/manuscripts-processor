@@ -8,7 +8,7 @@ namespace ManuscriptsProcessor.Units
 	{
 
 		[JsonConstructor]
-        public Grapheme(List<Dictionary<string, List<Value>>> _fields, string _graphemeID, string _grapheme)
+        public Grapheme(List<Tagging> _fields, string _graphemeID, string _grapheme)
         {
         	tagging = _fields;
             Id = _graphemeID;

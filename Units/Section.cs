@@ -11,7 +11,7 @@ namespace ManuscriptsProcessor.Units
 		public List<Segment> segments {get; set;}
 
 		[JsonConstructor]
-        public Section(string _sectionID, string _sectionName, List<Dictionary<string, List<Value>>> _sectionMetaData, List<Segment> _segments)
+        public Section(string _sectionID, string _sectionName, List<Tagging> _sectionMetaData, List<Segment> _segments)
         {
             Id = _sectionID;
             name = _sectionName;
