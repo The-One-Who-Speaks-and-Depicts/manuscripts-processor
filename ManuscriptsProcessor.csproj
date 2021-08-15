@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>ManuscriptsProcessor</PackageId>
-  <Version>0.2.0</Version>
+  <Version>0.3.0</Version>
   <Authors>Ilia Afanasev</Authors>
-  <Company>SPbU</Company>
+  <Company>HSE</Company>
   <Description>
       This library is aimed at simple preprocessing of ancient manuscripts. Warning, this is a deeply alpha version.
     </Description>
