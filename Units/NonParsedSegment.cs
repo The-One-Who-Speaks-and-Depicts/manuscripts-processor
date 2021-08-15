@@ -10,12 +10,13 @@ namespace ManuscriptsProcessor.Units
 		public List<Token> tokens;
 
 		[JsonConstructor]
-		public NonParsedSegment(string _segmentID, string _segmentText, List<Tagging> _segmentFields, List<Token> _tokens)
+		public NonParsedSegment(string _segmentID, string _segmentText, List<Tagging> _segmentFields, List<Token> _tokens, string _placeInRow)
 		{
 			Id = _segmentID;
 			name = _segmentText;
 			tagging = _segmentFields;
 			tokens = _tokens;
+			placeInRow = _placeInRow;
 		}
 
 		public NonParsedSegment(string _segmentID, string _segmentText)
