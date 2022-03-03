@@ -1,11 +1,24 @@
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using ManuscriptsProcessor.Units;
 
-namespace ManuscriptsProcessor.Values
+namespace CorpusDraftCSharp
 {
-	public class Value 
-	{
-		public string name {get; set;}
-		public List<Unit> connectedUnits {get; set;}
-	}
+	public class Value
+    {
+        [JsonProperty]
+        public string name { get; set; }
+
+
+        [JsonConstructor]
+        public Value(string _name)
+        {
+            this.name = _name;
+        }
+        public string Jsonize()
+        {
+            string realizationToJson = JsonConvert.SerializeObject(this, Formatting.Indented);
+            return realizationToJson;
+        }
+    }
 }

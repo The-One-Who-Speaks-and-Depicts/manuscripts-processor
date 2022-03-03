@@ -1,28 +1,40 @@
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using System.IO;
 using Newtonsoft.Json;
 
-namespace ManuscriptsProcessor.Units
+namespace CorpusDraftCSharp
 {
-	public class DictionaryUnit 
-	{
+    public class DictionaryUnit
+    {
+        #region classValues
+
+        #endregion
+
+        #region objectValues
         [JsonProperty]
-        public string Id {get ; set;}
+        public string lemma;
         [JsonProperty]
-        public string lemma {get; set;}
-        [JsonProperty]
-        public List<Token> realizations {get; set;}
+        public List<Realization> realizations;
+        #endregion
 
         [JsonConstructor]
-        public DictionaryUnit(string _ID, string _lemma, List<Token> _realizations)
+        public DictionaryUnit(string lemma, List<Realization> realizations)
         {
-            Id = _ID;
-            lemma = _lemma;
-            realizations = _realizations;
+            this.lemma = lemma;
+            this.realizations = realizations;
         }
 
         public DictionaryUnit()
         {
-            
-        }		
-	}
+
+        }
+        public string Jsonize()
+        {
+            string DictionaryUnitJsoned = JsonConvert.SerializeObject(this, Formatting.Indented);
+            return DictionaryUnitJsoned;
+        }
+    }
 }
