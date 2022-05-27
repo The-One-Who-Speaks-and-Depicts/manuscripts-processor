@@ -7,7 +7,7 @@ using System.Linq;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Realization
+    public class Realization : IEquatable<Realization>
     {
 
         #region objectValues
@@ -177,6 +177,12 @@ namespace CorpusDraftCSharp
             {
                 return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "\"> " + this.lexemeTwo + "</span>";
             }
+        }
+
+        public bool Equals(Realization other)
+        {
+            if (documentID == other.documentID && textID == other.textID && clauseID == other.clauseID && realizationID == other.realizationID) return true;
+            return false;
         }
 
         #endregion

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <PackageId>ManuscriptsProcessor</PackageId>
-  <Version>0.3.0</Version>
+  <Version>0.4.0.2</Version>
   <Authors>Ilia Afanasev</Authors>
   <Company>HSE</Company>
   <Description>
@@ -13,6 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
