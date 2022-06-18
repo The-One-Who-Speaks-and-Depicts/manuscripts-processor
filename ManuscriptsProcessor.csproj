@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>ManuscriptsProcessor</PackageId>
-  <Version>0.4.0.2</Version>
+  <Version>0.4.0.3</Version>
   <Authors>Ilia Afanasev</Authors>
   <Company>HSE</Company>
   <Description>
