@@ -7,7 +7,7 @@ using System.Linq;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Section : ICorpusUnit, IComparable<Section>
+    public class Section : IUnitGroup<ISectionPart>, IComparable<Section>
     {
 
 
@@ -21,19 +21,19 @@ namespace CorpusDraftCSharp
         [JsonProperty]
 	    public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public List<Clause> clauses = new List<Clause>();
+        public List<ISectionPart> subunits { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Section(string _textID, string _textName, string _filePath, List<Dictionary<string, List<Value>>> _textMetaData, List<Clause> _clauses)
+        public Section(string _textID, string _textName, string _filePath, List<Dictionary<string, List<Value>>> _textMetaData, List<ISectionPart> _clauses)
         {
             this.Id = _textID;
             this.filePath = _filePath;
             this.text = _textName;
             this.tagging = _textMetaData;
-            this.clauses = _clauses;
+            this.subunits = _clauses;
         }
 
         public Section(string _textID, string _textName, string _filePath)
@@ -72,10 +72,25 @@ namespace CorpusDraftCSharp
             Func<string> sentences = () =>
             {
                 string collected = "";
-                clauses.Sort();
-                foreach (var c in clauses)
+                var sortableSubunits = new List<ISectionPart>();
+                foreach (var unit in subunits)
                 {
-                    collected += c.Output();
+                    if (unit is Clause)
+                    {
+                        sortableSubunits.Add(unit);
+                    }
+                    else
+                    {
+                        foreach (var atomicUnit in unit.subunits)
+                        {
+                            sortableSubunits.Add((ISectionPart) atomicUnit);
+                        }
+                    }
+                }
+                sortableSubunits.Sort();
+                foreach (var t in subunits)
+                {
+                    collected += t.Output();
                 }
                 return collected;
             };

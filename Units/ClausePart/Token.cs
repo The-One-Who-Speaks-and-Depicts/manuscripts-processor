@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Token : ICorpusUnit, IEquatable<Token>, IComparable<Token>
+    public class Token : IUnitGroup<ITokenPart>, IEquatable<Token>, IComparable<Token>
     {
 
         #region objectValues
@@ -20,20 +20,20 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public string text { get; set; }
         [JsonProperty]
-        public List<Grapheme> letters { get; set; }
+        public List<ITokenPart> subunits { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Token(string _filePath, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
+        public Token(string _filePath, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<ITokenPart> _letters)
         {
             this.filePath = _filePath;
             this.tagging = _fields;
             this.Id = _realizationID;
             this.lexemeView = _lexemeOne;
             this.text = _lexemeTwo;
-            this.letters = _letters;
+            this.subunits = _letters;
         }
 
         public Token(Clause clause, string _realizationID, string _lexemeOne, string _lexemeTwo)
@@ -74,10 +74,25 @@ namespace CorpusDraftCSharp
             Func<string> graphemes = () =>
             {
                 string collected = "";
-                letters.Sort();
-                foreach (var l in letters)
+                var sortableSubunits = new List<ITokenPart>();
+                foreach (var unit in subunits)
                 {
-                    collected += l.Output();
+                    if (unit is Grapheme)
+                    {
+                        sortableSubunits.Add(unit);
+                    }
+                    else
+                    {
+                        foreach (var atomicUnit in unit.subunits)
+                        {
+                            sortableSubunits.Add((ITokenPart) atomicUnit);
+                        }
+                    }
+                }
+                sortableSubunits.Sort();
+                foreach (var t in sortableSubunits)
+                {
+                    collected += t.Output();
                 }
                 return collected;
             };

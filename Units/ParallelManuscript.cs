@@ -21,6 +21,11 @@ namespace CorpusDraftCSharp {
             return json;
         }
 
+        public string Output()
+        {
+            return "";
+        }
+
         public int CompareTo(ParallelManuscript other)
         {
             return MyExtensions.CompareIds(Id, other.Id);

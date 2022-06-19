@@ -1,32 +1,28 @@
-using System;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using System;
 
 namespace CorpusDraftCSharp
 {
-    [Serializable]
-    public class ParallelClause : ICorpusUnit
+    public class Segment : IUnitGroup<ISectionPart>
     {
         [JsonProperty]
         public string Id { get; set; }
         [JsonProperty]
         public string text { get; set; }
         [JsonProperty]
-
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public Clause clause;
-
-
+        public List<ISectionPart> subunits { get; set; }
         public string Jsonize()
         {
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            return json;
+            string jsonedClause = JsonConvert.SerializeObject(this, Formatting.Indented);
+            return jsonedClause;
         }
 
         public string Output()
         {
-            return "";
+            throw new NotImplementedException();
         }
     }
 }

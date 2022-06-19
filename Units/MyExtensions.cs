@@ -345,5 +345,155 @@ namespace CorpusDraftCSharp
             }
             return 0;
         }
+
+        public static string getFieldsInText(List<Dictionary<string, List<Value>>> fields)
+        {
+            string result = "";
+            foreach (var optional_tagging in fields)
+            {
+                foreach (var field in optional_tagging)
+                {
+                    result += field.Key;
+                    result += ":";
+                    foreach (var fieldValue in field.Value)
+                    {
+                        result += fieldValue.name;
+                        result += ";";
+                    }
+                    result += "||";
+                }
+                result += "\n";
+            }
+            return result;
+        }
+
+        public static string PartOutput(this ICorpusUnit corpusUnit)
+        {
+            string collected = "";
+            switch (corpusUnit.GetType().Name)
+            {
+                case "Manuscript":
+                    var sortableManuscriptParts = new List<IManuscriptPart>();
+                    foreach (var unit in (corpusUnit as Manuscript).subunits)
+                    {
+                        if (unit is Section)
+                        {
+                            sortableManuscriptParts.Add((IManuscriptPart) unit);
+                        }
+                        else
+                        {
+                            foreach (var atomicUnit in unit.subunits)
+                            {
+                                sortableManuscriptParts.Add((IManuscriptPart) atomicUnit);
+                            }
+                        }
+                    }
+                    sortableManuscriptParts.Sort();
+                    foreach (var t in sortableManuscriptParts)
+                    {
+                        collected += t.Output();
+                    }
+                    return collected;
+                case "Section":
+                    var sortableSectionParts = new List<ISectionPart>();
+                    foreach (var unit in (corpusUnit as Section).subunits)
+                    {
+                        if (unit is Clause)
+                        {
+                            sortableSectionParts.Add((ISectionPart) unit);
+                        }
+                        else
+                        {
+                            foreach (var atomicUnit in unit.subunits)
+                            {
+                                sortableSectionParts.Add((ISectionPart) atomicUnit);
+                            }
+                        }
+                    }
+                    sortableSectionParts.Sort();
+                    foreach (var t in sortableSectionParts)
+                    {
+                        collected += t.Output();
+                    }
+                    return collected;
+                case "Clause":
+                    var sortableClauseParts = new List<IClausePart>();
+                    foreach (var unit in (corpusUnit as Clause).subunits)
+                    {
+                        if (unit is Token)
+                        {
+                            sortableClauseParts.Add((IClausePart) unit);
+                        }
+                        else
+                        {
+                            foreach (var atomicUnit in unit.subunits)
+                            {
+                                sortableClauseParts.Add((IClausePart) atomicUnit);
+                            }
+                        }
+                    }
+                    sortableClauseParts.Sort();
+                    foreach (var t in sortableClauseParts)
+                    {
+                        collected += t.Output();
+                    }
+                    return collected;
+                case "Token":
+                    var sortableTokenParts = new List<ITokenPart>();
+                    foreach (var unit in (corpusUnit as Token).subunits)
+                    {
+                        if (unit is Grapheme)
+                        {
+                            sortableTokenParts.Add((ITokenPart) unit);
+                        }
+                        else
+                        {
+                            foreach (var atomicUnit in unit.subunits)
+                            {
+                                sortableTokenParts.Add((ITokenPart) atomicUnit);
+                            }
+                        }
+                    }
+                    sortableTokenParts.Sort();
+                    foreach (var t in sortableTokenParts)
+                    {
+                        collected += t.Output();
+                    }
+                    return collected;
+                default:
+                    var sortableSubunits = new List<ICorpusPart>();
+                    foreach (var unit in (corpusUnit as ICorpusPart).subunits)
+                    {
+                        if (unit is Manuscript)
+                        {
+                            sortableSubunits.Add((ICorpusPart) unit);
+                        }
+                        else
+                        {
+                            foreach (var atomicUnit in ((Subcorpus) unit).subunits)
+                            {
+                                sortableSubunits.Add((ICorpusPart) atomicUnit);
+                            }
+                        }
+                    }
+                    sortableSubunits.Sort();
+                    foreach (var t in sortableSubunits)
+                    {
+                        collected += t.Output();
+                    }
+                    return collected;
+            }
+        }
+
+        public static string Output(this ICorpusUnit corpusUnit)
+        {
+            var innerText = corpusUnit is Grapheme ? corpusUnit.text : corpusUnit.PartOutput();
+            if (corpusUnit.tagging is null || corpusUnit.tagging.Count < 1)
+            {
+                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
+            }
+            return "<span title=\"" + getFieldsInText (corpusUnit.tagging) + "\" data-content=\"" + getFieldsInText (corpusUnit.tagging).Replace("\n", "<br />") + "\" class=\"text\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CorpusDraftCSharp
 {
-    public class Manuscript : ICorpusUnit, IComparable<Manuscript>
+    public class Manuscript : IUnitGroup<IManuscriptPart>, IComparable<Manuscript>
     {
 
 
@@ -23,20 +23,20 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public List<Section> texts = new List<Section>();
+        public List<IManuscriptPart> subunits { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<Section> _texts)
+        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<IManuscriptPart> _texts)
         {
             Id = _documentID;
             text = _documentName;
             filePath = _filePath;
             googleDocPath = _googleDocPath;
             tagging = _documentMetaData;
-            texts = _texts;
+            subunits = _texts;
         }
 
         public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath)
@@ -65,8 +65,23 @@ namespace CorpusDraftCSharp
             Func<string> parts = () =>
             {
                 string collected = "";
-                texts.Sort();
-                foreach (var t in texts)
+                var sortableSubunits = new List<IManuscriptPart>();
+                foreach (var unit in subunits)
+                {
+                    if (unit is Section)
+                    {
+                        sortableSubunits.Add(unit);
+                    }
+                    else
+                    {
+                        foreach (var atomicUnit in unit.subunits)
+                        {
+                            sortableSubunits.Add((IManuscriptPart) atomicUnit);
+                        }
+                    }
+                }
+                sortableSubunits.Sort();
+                foreach (var t in subunits)
                 {
                     collected += t.Output();
                 }

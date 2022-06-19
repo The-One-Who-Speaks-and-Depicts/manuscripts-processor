@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Clause : ICorpusUnit, IComparable<Clause>
+    public class Clause : IUnitGroup<IClausePart>, IComparable<Clause>
     {
 
 
@@ -21,19 +21,19 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public string text { get; set; }
         [JsonProperty]
-        public List<Token> realizations = new List<Token>();
+        public List<IClausePart> subunits { get; set; }
         #endregion
 
 
         #region Constructors
         [JsonConstructor]
-        public Clause(string _filePath, string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<Token> _realizations)
+        public Clause(string _filePath, string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<IClausePart> _realizations)
         {
             this.filePath = _filePath;
             this.Id = _clauseID;
             this.text = _clauseText;
             this.tagging = _clauseFields;
-            this.realizations = _realizations;
+            this.subunits = _realizations;
         }
         public Clause(string _filePath, string _clauseID, string _clauseText)
         {
@@ -61,10 +61,25 @@ namespace CorpusDraftCSharp
             Func<string> tokens = () =>
             {
                 string collected = "";
-                realizations.Sort();
-                foreach (var r in realizations)
+                var sortableSubunits = new List<IClausePart>();
+                foreach (var unit in subunits)
                 {
-                    collected += r.Output();
+                    if (unit is Token)
+                    {
+                        sortableSubunits.Add(unit);
+                    }
+                    else
+                    {
+                        foreach (var atomicUnit in unit.subunits)
+                        {
+                            sortableSubunits.Add((IClausePart) atomicUnit);
+                        }
+                    }
+                }
+                sortableSubunits.Sort();
+                foreach (var t in sortableSubunits)
+                {
+                    collected += t.Output();
                 }
                 return collected;
             };
