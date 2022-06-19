@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CorpusDraftCSharp
 {
-    public class Manuscript : ICorpusUnit
+    public class Manuscript : ICorpusUnit, IComparable<Manuscript>
     {
 
 
@@ -65,7 +65,8 @@ namespace CorpusDraftCSharp
             Func<string> parts = () =>
             {
                 string collected = "";
-                foreach (var t in texts.OrderBy(text => Convert.ToInt32(text.documentID)).ThenBy(text => Convert.ToInt32(text.Id)))
+                texts.Sort();
+                foreach (var t in texts)
                 {
                     collected += t.Output();
                 }
@@ -106,7 +107,10 @@ namespace CorpusDraftCSharp
         }
         #endregion
 
-
+        public int CompareTo(Manuscript other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
+        }
 
 
 

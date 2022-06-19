@@ -7,17 +7,13 @@ using Newtonsoft.Json;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Clause : ICorpusUnit
+    public class Clause : ICorpusUnit, IComparable<Clause>
     {
 
 
         #region objectValues
         [JsonProperty]
-        public string documentID { get; set; }
-        [JsonProperty]
         public string filePath { get; set; }
-        [JsonProperty]
-        public string textID { get; set; }
         [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
@@ -31,31 +27,25 @@ namespace CorpusDraftCSharp
 
         #region Constructors
         [JsonConstructor]
-        public Clause(string _documentID, string _textID, string _filePath, string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<Token> _realizations)
+        public Clause(string _filePath, string _clauseID, string _clauseText, List<Dictionary<string, List<Value>>> _clauseFields, List<Token> _realizations)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
             this.Id = _clauseID;
             this.text = _clauseText;
             this.tagging = _clauseFields;
             this.realizations = _realizations;
         }
-        public Clause(string _documentID, string _textID, string _filePath, string _clauseID, string _clauseText)
+        public Clause(string _filePath, string _clauseID, string _clauseText)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
             this.Id = _clauseID;
             this.text = _clauseText;
         }
 
         public Clause(Section text, string _clauseID, string _clauseText)
         {
-            this.documentID = text.documentID;
+            this.Id = text.Id + "|" + _clauseID;
             this.filePath = text.filePath;
-            this.textID = text.Id;
-            this.Id = _clauseID;
             this.text = _clauseText;
         }
         public Clause()
@@ -71,7 +61,8 @@ namespace CorpusDraftCSharp
             Func<string> tokens = () =>
             {
                 string collected = "";
-                foreach (var r in realizations.OrderBy(realization => Convert.ToInt32(realization.documentID)).ThenBy(realization => Convert.ToInt32(realization.textID)).ThenBy(realization => Convert.ToInt32(realization.clauseID)).ThenBy(realization => Convert.ToInt32(realization.Id)))
+                realizations.Sort();
+                foreach (var r in realizations)
                 {
                     collected += r.Output();
                 }
@@ -105,17 +96,22 @@ namespace CorpusDraftCSharp
                 {
                     return clauseInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + clauseInRawText.Invoke(tagging) + "\" data-content=\"" + clauseInHTML.Invoke(tagging) + "\" class=\"clause\" id=\"" + this.documentID + "|" + this.textID + "|" + this.Id + "\"> " + tokens.Invoke() + "\t<button class=\"clauseButton\" type=\"button\">Добавить разметку</button></span><br />";
+                return "<span title=\"" + clauseInRawText.Invoke(tagging) + "\" data-content=\"" + clauseInHTML.Invoke(tagging) + "\" class=\"clause\" id=\"" + Id + "\"> " + tokens.Invoke() + "\t<button class=\"clauseButton\" type=\"button\">Добавить разметку</button></span><br />";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"clause\" id=\"" + this.documentID + "|" + this.Id  + "\"> " + tokens.Invoke() + "\t<button class=\"clauseButton\" type=\"button\">Добавить разметку</button></span><br />";
+                return "<span title= \"\" data-content=\"\" class=\"clause\" id=\"" + Id + "\"> " + tokens.Invoke() + "\t<button class=\"clauseButton\" type=\"button\">Добавить разметку</button></span><br />";
             }
         }
         public string Jsonize()
         {
             string jsonedClause = JsonConvert.SerializeObject(this, Formatting.Indented);
             return jsonedClause;
+        }
+
+        public int CompareTo(Clause other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
         }
         #endregion
     }

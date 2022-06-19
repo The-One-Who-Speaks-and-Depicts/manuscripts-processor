@@ -1,26 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Grapheme : ICorpusUnit
+    public class Grapheme : ICorpusUnit, IComparable<Grapheme>
     {
-        [JsonProperty]
-        public string documentID { get; set; }
         [JsonProperty]
         public string filePath { get; set; }
         [JsonProperty]
-        public string textID { get; set; }
-        [JsonProperty]
-        public string clauseID { get; set; }
-        [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
-        [JsonProperty]
-        public string realizationID { get; set; }
         [JsonProperty]
         public string Id { get; set; }
         [JsonProperty]
@@ -28,36 +18,24 @@ namespace CorpusDraftCSharp
 
 
         [JsonConstructor]
-        public Grapheme(string _documentID, string _filePath, string _textID, string _clauseID, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _graphemeID, string _grapheme)
+        public Grapheme(string _filePath,  List<Dictionary<string, List<Value>>> _fields, string _graphemeID, string _grapheme)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
-            this.clauseID = _clauseID;
             this.tagging = _fields;
-            this.realizationID = _realizationID;
             this.Id = _graphemeID;
             this.text = _grapheme;
         }
 
         public Grapheme(Token realization, string _graphemeID, string _grapheme)
         {
-            this.documentID = realization.documentID;
             this.filePath = realization.filePath;
-            this.textID = realization.textID;
-            this.clauseID = realization.clauseID;
-            this.realizationID = realization.Id;
-            this.Id = _graphemeID;
+            this.Id = realization.Id + "|" + _graphemeID;
             this.text = _grapheme;
         }
 
-        public Grapheme(string _documentID, string _filePath, string _textID, string _clauseID, string _realizationID, string _graphemeID, string _grapheme)
+        public Grapheme(string _filePath, string _graphemeID, string _grapheme)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
-            this.clauseID = _clauseID;
-            this.realizationID = _realizationID;
             this.Id = _graphemeID;
             this.text = _grapheme;
         }
@@ -103,12 +81,16 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.Id + "\">" + text + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"grapheme\" id=\"" + Id + "\">" + text + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.Id + "\">" + text + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"grapheme\" id=\"" + Id + "\">" + text + "</span>";
             }
+        }
+        public int CompareTo(Grapheme other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
         }
     }
 }

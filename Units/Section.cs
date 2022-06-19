@@ -7,13 +7,11 @@ using System.Linq;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Section : ICorpusUnit
+    public class Section : ICorpusUnit, IComparable<Section>
     {
 
 
 	    #region objectValues
-        [JsonProperty]
-        public string documentID { get; set; }
         [JsonProperty]
         public string filePath { get; set; }
         [JsonProperty]
@@ -29,9 +27,8 @@ namespace CorpusDraftCSharp
         #region Constructors
 
         [JsonConstructor]
-        public Section(string _documentID, string _textID, string _textName, string _filePath, List<Dictionary<string, List<Value>>> _textMetaData, List<Clause> _clauses)
+        public Section(string _textID, string _textName, string _filePath, List<Dictionary<string, List<Value>>> _textMetaData, List<Clause> _clauses)
         {
-            this.documentID = _documentID;
             this.Id = _textID;
             this.filePath = _filePath;
             this.text = _textName;
@@ -39,9 +36,8 @@ namespace CorpusDraftCSharp
             this.clauses = _clauses;
         }
 
-        public Section(string _documentID, string _textID, string _textName, string _filePath)
+        public Section(string _textID, string _textName, string _filePath)
         {
-            this.documentID = _documentID;
             this.Id = _textID;
             this.text = _textName;
             this.filePath = _filePath;
@@ -49,8 +45,7 @@ namespace CorpusDraftCSharp
 
         public Section(Manuscript document, string _textID, string _textName)
         {
-            this.documentID = document.Id;
-            this.Id = _textID;
+            this.Id = document.Id + "|" + _textID;
             this.text = _textName;
             this.filePath = document.filePath;
         }
@@ -77,7 +72,8 @@ namespace CorpusDraftCSharp
             Func<string> sentences = () =>
             {
                 string collected = "";
-                foreach (var c in clauses.OrderBy(clause => Convert.ToInt32(clause.documentID)).ThenBy(clause => Convert.ToInt32(clause.textID)).ThenBy(clause => Convert.ToInt32(clause.Id)))
+                clauses.Sort();
+                foreach (var c in clauses)
                 {
                     collected += c.Output();
                 }
@@ -109,15 +105,18 @@ namespace CorpusDraftCSharp
                 {
                     return textInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + textInRawText.Invoke(tagging) + "\" data-content=\"" + textInHTML.Invoke(tagging) + "\" class=\"text\" id=\"" + this.documentID + "|" + this.Id + "\"> " + sentences.Invoke() + "</span><br />";
+                return "<span title=\"" + textInRawText.Invoke(tagging) + "\" data-content=\"" + textInHTML.Invoke(tagging) + "\" class=\"text\" id=\"" + Id + "\"> " + sentences.Invoke() + "</span><br />";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + this.documentID + "|" + this.Id + "\"> " + sentences.Invoke() + "</span><br />";
+                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + Id + "\"> " + sentences.Invoke() + "</span><br />";
             }
         }
 
-
+        public int CompareTo(Section other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
+        }
 
         #endregion
     }

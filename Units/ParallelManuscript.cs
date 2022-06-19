@@ -1,11 +1,10 @@
 using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using CorpusDraftCSharp;
 
 namespace CorpusDraftCSharp {
     [Serializable]
-    public class ParallelDocument : ICorpusUnit
+    public class ParallelManuscript : ICorpusUnit, IComparable<ParallelManuscript>
     {
         [JsonProperty]
         public string Id { get; set; }
@@ -20,6 +19,11 @@ namespace CorpusDraftCSharp {
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             return json;
+        }
+
+        public int CompareTo(ParallelManuscript other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
         }
     }
 }

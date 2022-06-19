@@ -1,24 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Token : IEquatable<Token>, ICorpusUnit
+    public class Token : ICorpusUnit, IEquatable<Token>, IComparable<Token>
     {
 
         #region objectValues
         [JsonProperty]
-        public string documentID { get; set; }
-        [JsonProperty]
         public string filePath { get; set; }
-        [JsonProperty]
-        public string textID { get; set; }
-        [JsonProperty]
-        public string clauseID { get; set; }
         [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
@@ -34,12 +26,9 @@ namespace CorpusDraftCSharp
         #region Constructors
 
         [JsonConstructor]
-        public Token(string _documentID, string _filePath, string _textID, string _clauseID, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
+        public Token(string _filePath, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
-            this.clauseID = _clauseID;
             this.tagging = _fields;
             this.Id = _realizationID;
             this.lexemeView = _lexemeOne;
@@ -49,22 +38,16 @@ namespace CorpusDraftCSharp
 
         public Token(Clause clause, string _realizationID, string _lexemeOne, string _lexemeTwo)
         {
-            this.documentID = clause.documentID;
             this.filePath = clause.filePath;
-            this.textID = clause.textID;
-            this.clauseID = clause.Id;
-            this.Id = _realizationID;
+            this.Id = clause.Id + "|" +_realizationID;
             this.lexemeView =_lexemeOne;
             this.text = _lexemeTwo;
         }
 
 
-        public Token(string _documentID, string _filePath, string _textID, string _clauseID, string _realizationID, string _lexemeOne, string _lexemeTwo)
+        public Token(string _filePath, string _realizationID, string _lexemeOne, string _lexemeTwo)
         {
-            this.documentID = _documentID;
             this.filePath = _filePath;
-            this.textID = _textID;
-            this.clauseID = _clauseID;
             this.Id = _realizationID;
             this.lexemeView = _lexemeOne;
             this.text = _lexemeTwo;
@@ -91,7 +74,8 @@ namespace CorpusDraftCSharp
             Func<string> graphemes = () =>
             {
                 string collected = "";
-                foreach (var l in letters.OrderBy(graheme => Convert.ToInt32(graheme.documentID)).ThenBy(graheme => Convert.ToInt32(graheme.textID)).ThenBy(grapheme => Convert.ToInt32(grapheme.clauseID)).ThenBy(graheme => Convert.ToInt32(graheme.realizationID)).ThenBy(graheme => Convert.ToInt32(graheme.Id)))
+                letters.Sort();
+                foreach (var l in letters)
                 {
                     collected += l.Output();
                 }
@@ -129,11 +113,11 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + graphemes.Invoke() + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + Id + "\"> " + graphemes.Invoke() + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID +  "|" + this.clauseID + "|" + this.Id + "\"> " + graphemes.Invoke() + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + Id + "\"> " + graphemes.Invoke() + "</span>";
             }
         }
 
@@ -171,18 +155,22 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + this.text + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + Id + "\"> " + this.text + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + this.text + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + Id + "\"> " + this.text + "</span>";
             }
         }
 
         public bool Equals(Token other)
         {
-            if (documentID == other.documentID && textID == other.textID && clauseID == other.clauseID && Id == other.Id) return true;
-            return false;
+            return Id == other.Id;
+        }
+
+        public int CompareTo(Token other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
         }
 
         #endregion

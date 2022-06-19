@@ -326,5 +326,24 @@ namespace CorpusDraftCSharp
         {
             return false;
         }
+
+        public static List<int> SplitId(string Id)
+        {
+           return  Id.Split('|').Where(x => x != "").Select(x => Convert.ToInt32(x)).ToList();
+        }
+        public static int CompareIds(string _Id, string _otherId)
+        {
+            var currentId = SplitId(_Id);
+            var otherId = SplitId(_otherId);
+            for (int i = 0; i < currentId.Count; i++)
+            {
+                if (currentId[i] == otherId[i])
+                {
+                    continue;
+                }
+                return currentId[i] - otherId[i];
+            }
+            return 0;
+        }
     }
 }
