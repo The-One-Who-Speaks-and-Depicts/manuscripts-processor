@@ -7,70 +7,70 @@ using System.Linq;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Realization : IEquatable<Realization>
+    public class Token : IEquatable<Token>, ICorpusUnit
     {
 
         #region objectValues
         [JsonProperty]
-        public string documentID;
+        public string documentID { get; set; }
         [JsonProperty]
-        public string filePath;
+        public string filePath { get; set; }
         [JsonProperty]
-        public string textID;
+        public string textID { get; set; }
         [JsonProperty]
-        public string clauseID;
+        public string clauseID { get; set; }
         [JsonProperty]
-        public List<Dictionary<string, List<Value>>> realizationFields;
+        public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public string realizationID;
+        public string Id { get; set; }
         [JsonProperty]
-        public string lexemeOne;
+        public string lexemeView { get; set; }
         [JsonProperty]
-        public string lexemeTwo;
+        public string text { get; set; }
         [JsonProperty]
-        public List<Grapheme> letters = new List<Grapheme>();
+        public List<Grapheme> letters { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Realization(string _documentID, string _filePath, string _textID, string _clauseID, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
+        public Token(string _documentID, string _filePath, string _textID, string _clauseID, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
         {
             this.documentID = _documentID;
             this.filePath = _filePath;
             this.textID = _textID;
             this.clauseID = _clauseID;
-            this.realizationFields = _fields;
-            this.realizationID = _realizationID;
-            this.lexemeOne = _lexemeOne;
-            this.lexemeTwo = _lexemeTwo;
+            this.tagging = _fields;
+            this.Id = _realizationID;
+            this.lexemeView = _lexemeOne;
+            this.text = _lexemeTwo;
             this.letters = _letters;
         }
 
-        public Realization(Clause clause, string _realizationID, string _lexemeOne, string _lexemeTwo)
+        public Token(Clause clause, string _realizationID, string _lexemeOne, string _lexemeTwo)
         {
             this.documentID = clause.documentID;
             this.filePath = clause.filePath;
             this.textID = clause.textID;
-            this.clauseID = clause.clauseID;
-            this.realizationID = _realizationID;
-            this.lexemeOne = _lexemeOne;
-            this.lexemeTwo = _lexemeTwo;
+            this.clauseID = clause.Id;
+            this.Id = _realizationID;
+            this.lexemeView =_lexemeOne;
+            this.text = _lexemeTwo;
         }
 
 
-        public Realization(string _documentID, string _filePath, string _textID, string _clauseID, string _realizationID, string _lexemeOne, string _lexemeTwo)
+        public Token(string _documentID, string _filePath, string _textID, string _clauseID, string _realizationID, string _lexemeOne, string _lexemeTwo)
         {
             this.documentID = _documentID;
             this.filePath = _filePath;
             this.textID = _textID;
             this.clauseID = _clauseID;
-            this.realizationID = _realizationID;
-            this.lexemeOne = _lexemeOne;
-            this.lexemeTwo = _lexemeTwo;
+            this.Id = _realizationID;
+            this.lexemeView = _lexemeOne;
+            this.text = _lexemeTwo;
         }
 
-        public Realization()
+        public Token()
         {
 
         }
@@ -91,7 +91,7 @@ namespace CorpusDraftCSharp
             Func<string> graphemes = () =>
             {
                 string collected = "";
-                foreach (var l in letters.OrderBy(graheme => Convert.ToInt32(graheme.documentID)).ThenBy(graheme => Convert.ToInt32(graheme.textID)).ThenBy(grapheme => Convert.ToInt32(grapheme.clauseID)).ThenBy(graheme => Convert.ToInt32(graheme.realizationID)).ThenBy(graheme => Convert.ToInt32(graheme.graphemeID)))
+                foreach (var l in letters.OrderBy(graheme => Convert.ToInt32(graheme.documentID)).ThenBy(graheme => Convert.ToInt32(graheme.textID)).ThenBy(grapheme => Convert.ToInt32(grapheme.clauseID)).ThenBy(graheme => Convert.ToInt32(graheme.realizationID)).ThenBy(graheme => Convert.ToInt32(graheme.Id)))
                 {
                     collected += l.Output();
                 }
@@ -129,11 +129,11 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(realizationFields) + "\" data-content=\"" + fieldsInHTML.Invoke(realizationFields) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "\"> " + graphemes.Invoke() + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + graphemes.Invoke() + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID +  "|" + this.clauseID + "|" + this.realizationID + "\"> " + graphemes.Invoke() + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID +  "|" + this.clauseID + "|" + this.Id + "\"> " + graphemes.Invoke() + "</span>";
             }
         }
 
@@ -171,17 +171,17 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(realizationFields) + "\" data-content=\"" + fieldsInHTML.Invoke(realizationFields) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "\"> " + this.lexemeTwo + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + this.text + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "\"> " + this.lexemeTwo + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.Id + "\"> " + this.text + "</span>";
             }
         }
 
-        public bool Equals(Realization other)
+        public bool Equals(Token other)
         {
-            if (documentID == other.documentID && textID == other.textID && clauseID == other.clauseID && realizationID == other.realizationID) return true;
+            if (documentID == other.documentID && textID == other.textID && clauseID == other.clauseID && Id == other.Id) return true;
             return false;
         }
 

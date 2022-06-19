@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Grapheme
+    public class Grapheme : ICorpusUnit
     {
         [JsonProperty]
-        public string documentID;
+        public string documentID { get; set; }
         [JsonProperty]
-        public string filePath;
+        public string filePath { get; set; }
         [JsonProperty]
-        public string textID;
+        public string textID { get; set; }
         [JsonProperty]
-        public string clauseID;
+        public string clauseID { get; set; }
         [JsonProperty]
-        public List<Dictionary<string, List<Value>>> graphemeFields;
+        public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public string realizationID;
+        public string realizationID { get; set; }
         [JsonProperty]
-        public string graphemeID;
+        public string Id { get; set; }
         [JsonProperty]
-        public string grapheme;
+        public string text { get; set; }
 
 
         [JsonConstructor]
@@ -34,21 +34,21 @@ namespace CorpusDraftCSharp
             this.filePath = _filePath;
             this.textID = _textID;
             this.clauseID = _clauseID;
-            this.graphemeFields = _fields;
+            this.tagging = _fields;
             this.realizationID = _realizationID;
-            this.graphemeID = _graphemeID;
-            this.grapheme = _grapheme;
+            this.Id = _graphemeID;
+            this.text = _grapheme;
         }
 
-        public Grapheme(Realization realization, string _graphemeID, string _grapheme)
+        public Grapheme(Token realization, string _graphemeID, string _grapheme)
         {
             this.documentID = realization.documentID;
             this.filePath = realization.filePath;
             this.textID = realization.textID;
             this.clauseID = realization.clauseID;
-            this.realizationID = realization.realizationID;
-            this.graphemeID = _graphemeID;
-            this.grapheme = _grapheme;
+            this.realizationID = realization.Id;
+            this.Id = _graphemeID;
+            this.text = _grapheme;
         }
 
         public Grapheme(string _documentID, string _filePath, string _textID, string _clauseID, string _realizationID, string _graphemeID, string _grapheme)
@@ -58,8 +58,8 @@ namespace CorpusDraftCSharp
             this.textID = _textID;
             this.clauseID = _clauseID;
             this.realizationID = _realizationID;
-            this.graphemeID = _graphemeID;
-            this.grapheme = _grapheme;
+            this.Id = _graphemeID;
+            this.text = _grapheme;
         }
 
         public Grapheme()
@@ -103,11 +103,11 @@ namespace CorpusDraftCSharp
                 {
                     return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + fieldsInRawText.Invoke(graphemeFields) + "\" data-content=\"" + fieldsInHTML.Invoke(graphemeFields) + "\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.graphemeID + "\">" + grapheme + "</span>";
+                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.Id + "\">" + text + "</span>";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.graphemeID + "\">" + grapheme + "</span>";
+                return "<span title= \"\" data-content=\"\" class=\"grapheme\" id=\"" + this.documentID + "|" + this.textID + "|" + this.clauseID + "|" + this.realizationID + "|" + this.Id + "\">" + text + "</span>";
             }
         }
     }

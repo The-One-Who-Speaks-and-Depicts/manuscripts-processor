@@ -7,47 +7,47 @@ using Newtonsoft.Json;
 
 namespace CorpusDraftCSharp
 {
-    public class Document
+    public class Manuscript : ICorpusUnit
     {
 
 
         #region objectValues
         [JsonProperty]
-        public string documentID;
+        public string Id { get; set; }
         [JsonProperty]
-        public readonly string documentName;
+        public string text { get; set; }
         [JsonProperty]
         public string filePath;
         [JsonProperty]
         public string googleDocPath;
         [JsonProperty]
-        public List<Dictionary<string, List<Value>>> documentMetaData = new List<Dictionary<string, List<Value>>>();
+        public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public List<Text> texts = new List<Text>();
+        public List<Section> texts = new List<Section>();
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Document(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<Text> _texts)
+        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<Section> _texts)
         {
-            documentID = _documentID;
-            documentName = _documentName;
+            Id = _documentID;
+            text = _documentName;
             filePath = _filePath;
             googleDocPath = _googleDocPath;
-            documentMetaData = _documentMetaData;
+            tagging = _documentMetaData;
             texts = _texts;
         }
 
-        public Document(string _documentID, string _documentName, string _filePath, string _googleDocPath)
+        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath)
         {
-            documentID = _documentID;
-            documentName = _documentName;
+            Id = _documentID;
+            text = _documentName;
             filePath = _filePath;
             googleDocPath = _googleDocPath;
         }
 
-        public Document()
+        public Manuscript()
         {
 
         }
@@ -65,7 +65,7 @@ namespace CorpusDraftCSharp
             Func<string> parts = () =>
             {
                 string collected = "";
-                foreach (var t in texts.OrderBy(text => Convert.ToInt32(text.documentID)).ThenBy(text => Convert.ToInt32(text.textID)))
+                foreach (var t in texts.OrderBy(text => Convert.ToInt32(text.documentID)).ThenBy(text => Convert.ToInt32(text.Id)))
                 {
                     collected += t.Output();
                 }
@@ -97,11 +97,11 @@ namespace CorpusDraftCSharp
                 {
                     return documentInRawText.Invoke(fields).Replace("\n", "<br />");
                 };
-                return "<span title=\"" + documentInRawText.Invoke(documentMetaData) + "\" data-content=\"" + documentInHTML.Invoke(documentMetaData) + "\" class=\"text\" id=\"" + this.documentID + "\"> " + parts.Invoke() + "</span><br />";
+                return "<span title=\"" + documentInRawText.Invoke(tagging) + "\" data-content=\"" + documentInHTML.Invoke(tagging) + "\" class=\"text\" id=\"" + this.Id + "\"> " + parts.Invoke() + "</span><br />";
             }
             catch
             {
-                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + this.documentID + "\"> " + parts.Invoke() + "</span><br />";
+                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + this.Id + "\"> " + parts.Invoke() + "</span><br />";
             }
         }
         #endregion

@@ -5,16 +5,17 @@ using CorpusDraftCSharp;
 
 namespace CorpusDraftCSharp {
     [Serializable]
-    public class ParallelDocument {
+    public class ParallelDocument : ICorpusUnit
+    {
         [JsonProperty]
-        public string id;
+        public string Id { get; set; }
         [JsonProperty]
-        public string name;
+        public string text { get; set; }
         [JsonProperty]
-        public List<Dictionary<string, List<Value>>> documentMetaData;
+        public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public ParallelClause[,] parallelClauses;
-        public List<ParallelToken> parallelTokens;
+        public ParallelClause[,] parallelClauses { get; set; }
+        public List<ParallelToken> parallelTokens { get; set; }
         public string Jsonize()
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
