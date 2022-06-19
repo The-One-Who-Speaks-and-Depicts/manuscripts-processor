@@ -367,127 +367,20 @@ namespace CorpusDraftCSharp
             return result;
         }
 
-        public static string PartOutput(this ICorpusUnit corpusUnit)
+        public static string PartOutput(this IUnitGroup<ICorpusUnit> corpusUnit)
         {
             string collected = "";
-            switch (corpusUnit.GetType().Name)
+            corpusUnit.subunits.Sort();
+            foreach (var unit in corpusUnit.subunits)
             {
-                case "Manuscript":
-                    var sortableManuscriptParts = new List<IManuscriptPart>();
-                    foreach (var unit in (corpusUnit as Manuscript).subunits)
-                    {
-                        if (unit is Section)
-                        {
-                            sortableManuscriptParts.Add((IManuscriptPart) unit);
-                        }
-                        else
-                        {
-                            foreach (var atomicUnit in unit.subunits)
-                            {
-                                sortableManuscriptParts.Add((IManuscriptPart) atomicUnit);
-                            }
-                        }
-                    }
-                    sortableManuscriptParts.Sort();
-                    foreach (var t in sortableManuscriptParts)
-                    {
-                        collected += t.Output();
-                    }
-                    return collected;
-                case "Section":
-                    var sortableSectionParts = new List<ISectionPart>();
-                    foreach (var unit in (corpusUnit as Section).subunits)
-                    {
-                        if (unit is Clause)
-                        {
-                            sortableSectionParts.Add((ISectionPart) unit);
-                        }
-                        else
-                        {
-                            foreach (var atomicUnit in unit.subunits)
-                            {
-                                sortableSectionParts.Add((ISectionPart) atomicUnit);
-                            }
-                        }
-                    }
-                    sortableSectionParts.Sort();
-                    foreach (var t in sortableSectionParts)
-                    {
-                        collected += t.Output();
-                    }
-                    return collected;
-                case "Clause":
-                    var sortableClauseParts = new List<IClausePart>();
-                    foreach (var unit in (corpusUnit as Clause).subunits)
-                    {
-                        if (unit is Token)
-                        {
-                            sortableClauseParts.Add((IClausePart) unit);
-                        }
-                        else
-                        {
-                            foreach (var atomicUnit in unit.subunits)
-                            {
-                                sortableClauseParts.Add((IClausePart) atomicUnit);
-                            }
-                        }
-                    }
-                    sortableClauseParts.Sort();
-                    foreach (var t in sortableClauseParts)
-                    {
-                        collected += t.Output();
-                    }
-                    return collected;
-                case "Token":
-                    var sortableTokenParts = new List<ITokenPart>();
-                    foreach (var unit in (corpusUnit as Token).subunits)
-                    {
-                        if (unit is Grapheme)
-                        {
-                            sortableTokenParts.Add((ITokenPart) unit);
-                        }
-                        else
-                        {
-                            foreach (var atomicUnit in unit.subunits)
-                            {
-                                sortableTokenParts.Add((ITokenPart) atomicUnit);
-                            }
-                        }
-                    }
-                    sortableTokenParts.Sort();
-                    foreach (var t in sortableTokenParts)
-                    {
-                        collected += t.Output();
-                    }
-                    return collected;
-                default:
-                    var sortableSubunits = new List<ICorpusPart>();
-                    foreach (var unit in (corpusUnit as ICorpusPart).subunits)
-                    {
-                        if (unit is Manuscript)
-                        {
-                            sortableSubunits.Add((ICorpusPart) unit);
-                        }
-                        else
-                        {
-                            foreach (var atomicUnit in ((Subcorpus) unit).subunits)
-                            {
-                                sortableSubunits.Add((ICorpusPart) atomicUnit);
-                            }
-                        }
-                    }
-                    sortableSubunits.Sort();
-                    foreach (var t in sortableSubunits)
-                    {
-                        collected += t.Output();
-                    }
-                    return collected;
+                collected += unit.Output();
             }
+            return collected;
         }
 
-        public static string Output(this ICorpusUnit corpusUnit)
+        public static string UnitOutput(ICorpusUnit corpusUnit, bool atomicUnit = false)
         {
-            var innerText = corpusUnit is Grapheme ? corpusUnit.text : corpusUnit.PartOutput();
+            var innerText = (corpusUnit is Grapheme || atomicUnit) ? (corpusUnit as IUnitGroup<ICorpusUnit>).PartOutput() : corpusUnit.text;
             if (corpusUnit.tagging is null || corpusUnit.tagging.Count < 1)
             {
                 return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";

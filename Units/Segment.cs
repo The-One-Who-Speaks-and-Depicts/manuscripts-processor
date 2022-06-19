@@ -4,7 +4,7 @@ using System;
 
 namespace CorpusDraftCSharp
 {
-    public class Segment : IUnitGroup<ISectionPart>
+    public class Segment : ICorpusUnit, IUnitGroup<Clause>, IComparable<Segment>
     {
         [JsonProperty]
         public string Id { get; set; }
@@ -13,7 +13,7 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public List<ISectionPart> subunits { get; set; }
+        public List<Clause> subunits { get; set; }
         public string Jsonize()
         {
             string jsonedClause = JsonConvert.SerializeObject(this, Formatting.Indented);
@@ -22,7 +22,11 @@ namespace CorpusDraftCSharp
 
         public string Output()
         {
-            throw new NotImplementedException();
+            return MyExtensions.UnitOutput(this);
+        }
+        public int CompareTo(Segment other)
+        {
+            return MyExtensions.CompareIds(Id, other.Id);
         }
     }
 }

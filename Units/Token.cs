@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace CorpusDraftCSharp
 {
     [Serializable]
-    public class Token : IUnitGroup<ITokenPart>, IEquatable<Token>, IComparable<Token>
+    public class Token : ICorpusUnit, IUnitGroup<Grapheme>, IEquatable<Token>, IComparable<Token>
     {
 
         #region objectValues
@@ -20,13 +20,13 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public string text { get; set; }
         [JsonProperty]
-        public List<ITokenPart> subunits { get; set; }
+        public List<Grapheme> subunits { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Token(string _filePath, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<ITokenPart> _letters)
+        public Token(string _filePath, List<Dictionary<string, List<Value>>> _fields, string _realizationID, string _lexemeOne, string _lexemeTwo, List<Grapheme> _letters)
         {
             this.filePath = _filePath;
             this.tagging = _fields;
@@ -71,111 +71,12 @@ namespace CorpusDraftCSharp
 
         public string Output()
         {
-            Func<string> graphemes = () =>
-            {
-                string collected = "";
-                var sortableSubunits = new List<ITokenPart>();
-                foreach (var unit in subunits)
-                {
-                    if (unit is Grapheme)
-                    {
-                        sortableSubunits.Add(unit);
-                    }
-                    else
-                    {
-                        foreach (var atomicUnit in unit.subunits)
-                        {
-                            sortableSubunits.Add((ITokenPart) atomicUnit);
-                        }
-                    }
-                }
-                sortableSubunits.Sort();
-                foreach (var t in sortableSubunits)
-                {
-                    collected += t.Output();
-                }
-                return collected;
-            };
-            try
-            {
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInRawText = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    string result = "";
-                    foreach (var optional_tagging in fields)
-                    {
-                        if (optional_tagging.Count > 0)
-                        {
-                            foreach (var field in optional_tagging)
-                            {
-                                result += field.Key;
-                                result += ":";
-                                for (int i = 0; i < field.Value.Count; i++)
-                                {
-                                    result += field.Value[i].name;
-                                    if (i < field.Value.Count - 1)
-                                    {
-                                        result += ",";
-                                    }
-                                }
-                                result += ";\n";
-                            }
-                            result += "***";
-                        }
-                    }
-                    return result;
-                };
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInHTML = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
-                };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + Id + "\"> " + graphemes.Invoke() + "</span>";
-            }
-            catch
-            {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + Id + "\"> " + graphemes.Invoke() + "</span>";
-            }
+            return MyExtensions.UnitOutput(this);
         }
 
         public string KeyOutput()
         {
-            try
-            {
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInRawText = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    string result = "";
-                    foreach (var optional_tagging in fields)
-                    {
-                        if (optional_tagging.Count > 0)
-                        {
-                            foreach (var field in optional_tagging)
-                            {
-                                result += field.Key;
-                                result += ":";
-                                for (int i = 0; i < field.Value.Count; i++)
-                                {
-                                    result += field.Value[i].name;
-                                    if (i < field.Value.Count - 1)
-                                    {
-                                        result += ",";
-                                    }
-                                }
-                                result += ";\n";
-                            }
-                            result += "***";
-                        }
-                    }
-                    return result;
-                };
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInHTML = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
-                };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"word\" id=\"" + Id + "\"> " + this.text + "</span>";
-            }
-            catch
-            {
-                return "<span title= \"\" data-content=\"\" class=\"word\" id=\"" + Id + "\"> " + this.text + "</span>";
-            }
+            return MyExtensions.UnitOutput(this, true);
         }
 
         public bool Equals(Token other)

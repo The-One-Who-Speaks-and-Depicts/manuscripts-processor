@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Newtonsoft.Json;
+using static CorpusDraftCSharp.MyExtensions;
 
 namespace CorpusDraftCSharp
 {
-    public class Manuscript : IUnitGroup<IManuscriptPart>, IComparable<Manuscript>
+    public class Manuscript : ICorpusUnit, IUnitGroup<Section>, IComparable<Manuscript>
     {
 
 
@@ -23,13 +24,13 @@ namespace CorpusDraftCSharp
         [JsonProperty]
         public List<Dictionary<string, List<Value>>> tagging { get; set; }
         [JsonProperty]
-        public List<IManuscriptPart> subunits { get; set; }
+        public List<Section> subunits { get; set; }
         #endregion
 
         #region Constructors
 
         [JsonConstructor]
-        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<IManuscriptPart> _texts)
+        public Manuscript(string _documentID, string _documentName, string _filePath, string _googleDocPath, List<Dictionary<string, List<Value>>> _documentMetaData, List<Section> _texts)
         {
             Id = _documentID;
             text = _documentName;
@@ -62,63 +63,7 @@ namespace CorpusDraftCSharp
 
         public string Output()
         {
-            Func<string> parts = () =>
-            {
-                string collected = "";
-                var sortableSubunits = new List<IManuscriptPart>();
-                foreach (var unit in subunits)
-                {
-                    if (unit is Section)
-                    {
-                        sortableSubunits.Add(unit);
-                    }
-                    else
-                    {
-                        foreach (var atomicUnit in unit.subunits)
-                        {
-                            sortableSubunits.Add((IManuscriptPart) atomicUnit);
-                        }
-                    }
-                }
-                sortableSubunits.Sort();
-                foreach (var t in subunits)
-                {
-                    collected += t.Output();
-                }
-                return collected;
-            };
-            try
-            {
-                Func<List<Dictionary<string, List<Value>>>, string> documentInRawText = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    string result = "";
-                    foreach (var optional_tagging in fields)
-                    {
-                        foreach (var field in optional_tagging)
-                        {
-                            result += field.Key;
-                            result += ":";
-                            foreach (var fieldValue in field.Value)
-                            {
-                                result += fieldValue.name;
-                                result += ";";
-                            }
-                            result += "||";
-                        }
-                        result += "\n";
-                    }
-                    return result;
-                };
-                Func<List<Dictionary<string, List<Value>>>, string> documentInHTML = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    return documentInRawText.Invoke(fields).Replace("\n", "<br />");
-                };
-                return "<span title=\"" + documentInRawText.Invoke(tagging) + "\" data-content=\"" + documentInHTML.Invoke(tagging) + "\" class=\"text\" id=\"" + this.Id + "\"> " + parts.Invoke() + "</span><br />";
-            }
-            catch
-            {
-                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + this.Id + "\"> " + parts.Invoke() + "</span><br />";
-            }
+            return MyExtensions.UnitOutput(this);
         }
         #endregion
 

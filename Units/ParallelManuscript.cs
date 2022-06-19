@@ -23,7 +23,7 @@ namespace CorpusDraftCSharp {
 
         public string Output()
         {
-            return "";
+            throw new NotImplementedException();
         }
 
         public int CompareTo(ParallelManuscript other)

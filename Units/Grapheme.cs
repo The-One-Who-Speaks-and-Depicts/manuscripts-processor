@@ -53,40 +53,7 @@ namespace CorpusDraftCSharp
 
         public string Output()
         {
-            try
-            {
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInRawText = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    string result = "";
-                    foreach (var optional_tagging in fields)
-                    {
-                        foreach (var field in optional_tagging)
-                        {
-                            result += field.Key;
-                            result += ":";
-                            for (int i = 0; i < field.Value.Count; i++)
-                            {
-                                result += field.Value[i].name;
-                                if (i < field.Value.Count - 1)
-                                {
-                                    result += ",";
-                                }
-                            }
-                            result += ";\n";
-                        }
-                    }
-                    return result;
-                };
-                Func<List<Dictionary<string, List<Value>>>, string> fieldsInHTML = (List<Dictionary<string, List<Value>>> fields) =>
-                {
-                    return fieldsInRawText.Invoke(fields).Replace("\n", "<br />");
-                };
-                return "<span title=\"" + fieldsInRawText.Invoke(tagging) + "\" data-content=\"" + fieldsInHTML.Invoke(tagging) + "\" class=\"grapheme\" id=\"" + Id + "\">" + text + "</span>";
-            }
-            catch
-            {
-                return "<span title= \"\" data-content=\"\" class=\"grapheme\" id=\"" + Id + "\">" + text + "</span>";
-            }
+            return MyExtensions.UnitOutput(this);
         }
         public int CompareTo(Grapheme other)
         {
