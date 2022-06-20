@@ -385,9 +385,9 @@ namespace ManuscriptsProcessor
             var innerText = (corpusUnit is Grapheme || atomicUnit) ? (corpusUnit as IUnitGroup<ICorpusUnit>).PartOutput() : corpusUnit.text;
             if (corpusUnit.tagging is null || corpusUnit.tagging.Count < 1)
             {
-                return "<span title= \"\" data-content=\"\" class=\"text\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
+                return "<span title= \"\" data-content=\"\" class=\"" + corpusUnit.GetType() + "\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
             }
-            return "<span title=\"" + getFieldsInText (corpusUnit.tagging) + "\" data-content=\"" + getFieldsInText (corpusUnit.tagging).Replace("\n", "<br />") + "\" class=\"text\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
+            return "<span title=\"" + getFieldsInText (corpusUnit.tagging) + "\" data-content=\"" + getFieldsInText (corpusUnit.tagging).Replace("\n", "<br />") + "\" class=\"" + corpusUnit.GetType() + "\" id=\"" + corpusUnit.Id + "\"> " + innerText + "</span><br />";
         }
 
     }
