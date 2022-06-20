@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public class Segment : ICorpusUnit, IUnitGroup<Clause>, IComparable<Segment>
     {

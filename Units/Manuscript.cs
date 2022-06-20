@@ -1,12 +1,8 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using Newtonsoft.Json;
-using static CorpusDraftCSharp.MyExtensions;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public class Manuscript : ICorpusUnit, IUnitGroup<Section>, IComparable<Manuscript>
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public class TokenGroup : List<Token>
     {

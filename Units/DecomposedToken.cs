@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public record DecomposedToken
     {

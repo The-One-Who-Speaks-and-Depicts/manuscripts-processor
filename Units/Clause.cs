@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     [Serializable]
     public class Clause : ICorpusUnit, IUnitGroup<Token>, IComparable<Clause>

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public interface ICorpusUnit
     {

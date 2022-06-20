@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     [Serializable]
     public class Grapheme : ICorpusUnit, IComparable<Grapheme>

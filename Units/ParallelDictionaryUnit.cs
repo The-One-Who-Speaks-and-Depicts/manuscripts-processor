@@ -1,8 +1,8 @@
-using CorpusDraftCSharp;
+using ManuscriptsProcessor;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public class ParallelDictionaryUnit : DictionaryUnit
     {

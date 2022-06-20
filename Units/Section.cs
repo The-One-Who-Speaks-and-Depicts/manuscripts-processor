@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     [Serializable]
     public class Section : ICorpusUnit, IUnitGroup<Segment>, IComparable<Section>

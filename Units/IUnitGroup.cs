@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CorpusDraftCSharp
+namespace ManuscriptsProcessor
 {
     public interface IUnitGroup<T> where T: ICorpusUnit
     {
