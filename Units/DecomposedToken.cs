@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Units
 {
     public record DecomposedToken
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using ManuscriptsProcessor.Values;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Units
 {
     public class Manuscript : ICorpusUnit, IUnitGroup<Section>, IComparable<Manuscript>
     {

@@ -7,6 +7,8 @@ using ExcelDataReader;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using ManuscriptsProcessor.Units;
+using ManuscriptsProcessor.Values;
 
 namespace ManuscriptsProcessor
 {

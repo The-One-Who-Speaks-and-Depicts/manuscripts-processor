@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using ManuscriptsProcessor.Values;
 using System;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Units
 {
     public interface ICorpusUnit
     {

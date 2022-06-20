@@ -1,8 +1,6 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Values
 {
 	public class Value
     {

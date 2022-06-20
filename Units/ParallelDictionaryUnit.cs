@@ -2,7 +2,7 @@ using ManuscriptsProcessor;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace ManuscriptsProcessor
+namespace ManuscriptsProcessor.Units
 {
     public class ParallelDictionaryUnit : DictionaryUnit
     {
